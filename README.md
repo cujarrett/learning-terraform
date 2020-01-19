@@ -13,8 +13,8 @@ The infrastructure Terraform can manage includes low-level components such as co
 ### Infrastructure as Code
 Infrastructure is described using a high-level configuration syntax. This allows a blueprint of your datacenter to be versioned and treated as you would any other code. Additionally, infrastructure can be shared and re-used.
 
-#### Take Aways
+## Take Aways
 
-#### Things I like
+## Things I like
 
-#### Things I'm not a huge fan of
+## Things I'm not a huge fan of
