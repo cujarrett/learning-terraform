@@ -1,3 +1,5 @@
+![logo](./media/readme-logo.jpg)
+
 #### Preface
 I used a temporary AWS IAM user for this learning that I've since deleted. All resources were tore down after being spun up during learning.
 
