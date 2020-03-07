@@ -7,3 +7,6 @@
 
 # .tfvars files
 *.tfvars
+
+# misc
+.DS_Store
