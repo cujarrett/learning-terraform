@@ -1,12 +1,15 @@
 variable "aws_s3_origin_bucket" {
+  type = string
   description = "AWS S3 origin bucket"
 }
 
 variable "site_name" {
+  type = string
   description = "Site name"
 }
 
 variable "aws_region" {
+  type = string
   description = "AWS Region the infrastructure will be created in"
 }
 
