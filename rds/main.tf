@@ -4,6 +4,6 @@ module "rds" {
   rds_password = var.rds_password
 }
 
-output "rds_details" {
-  value = module.rds.rds_details
+output "rds_address" {
+  value = module.rds.rds_address
 }

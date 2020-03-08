@@ -1,5 +1,4 @@
-variable "aws_s3_origin_bucket" {
-  type = string
+variable "s3_origin_bucket" {
   description = "AWS S3 origin bucket"
 }
 
@@ -15,8 +14,8 @@ variable "aws_region" {
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name = var.aws_s3_origin_bucket.bucket_regional_domain_name
-    origin_id   = var.aws_s3_origin_bucket.id
+    domain_name = var.s3_origin_bucket.bucket_regional_domain_name
+    origin_id   = var.s3_origin_bucket.id
   }
 
   enabled = true
@@ -28,7 +27,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.aws_s3_origin_bucket.id
+    target_origin_id = var.s3_origin_bucket.id
 
     forwarded_values {
         query_string = true
@@ -48,7 +47,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     path_pattern     = "/content/immutable/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id = var.aws_s3_origin_bucket.id
+    target_origin_id = var.s3_origin_bucket.id
 
     forwarded_values {
       query_string = false
@@ -71,7 +70,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     path_pattern     = "/content/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.aws_s3_origin_bucket.id
+    target_origin_id = var.s3_origin_bucket.id
 
     forwarded_values {
       query_string = false
@@ -117,6 +116,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 }
 
-output "aws_cloudfront_info" {
+output "cloudfront_info" {
   value = aws_cloudfront_distribution.s3_distribution
 }

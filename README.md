@@ -28,6 +28,7 @@ Infrastructure is described using a high-level configuration syntax. This allows
 - [AWS EC2](./ec2/)
 - [AWS RDS](./rds/)
 - [AWS VPC](./vpc/)
+- [AWS CloudFront with S3 origin](./cloudfront-with-s3-origin/)
 
 ## Take Aways
 #### Terraform CLI

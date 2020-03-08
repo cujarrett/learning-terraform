@@ -18,10 +18,14 @@ resource "aws_db_instance" "rds" {
   password = var.rds_password
   port = 3306
   allocated_storage = 20
-  // As this is a simple learning hack, I'm not needing or wanting to pay for a snapshot
   skip_final_snapshot = true
 }
 
-output "rds_details" {
-  value = aws_db_instance.rds
+output "rds_password" {
+  value = aws_db_instance.rds.password
+  sensitive = true
+}
+
+output "rds_address" {
+  value = aws_db_instance.rds.address
 }

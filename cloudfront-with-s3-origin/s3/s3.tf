@@ -44,6 +44,6 @@ resource "aws_s3_bucket" "origin" {
 EOF
 }
 
-output "aws_s3_origin_bucket" {
+output "s3_origin_bucket" {
   value = aws_s3_bucket.origin
 }
