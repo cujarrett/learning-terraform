@@ -1,40 +1,12 @@
-variable "ami" {
-  type = string
-  default = "ami-062f7200baf2fa504"
+module "ec2" {
+  source = "./ec2"
+  ec2_name = "my_ec2_name"
 }
 
-resource "aws_instance" "ec2" {
-  ami = var.ami
-  instance_type = "t2.micro"
-  security_groups = [ aws_security_group.web_traffic.name ]
-
-  tags = {
-    name = "Public IP Example"
-  }
+output "ec2_public_ip" {
+  value = module.ec2.public_ip
 }
 
-resource "aws_security_group" "web_traffic" {
-  name = "Allow HTTPS"
-
-  ingress {
-    from_port = 443
-    to_port = 443
-    protocol = "TCP"
-    cidr_blocks = [ "0.0.0.0/0" ]
-  }
-
-  egress {
-    from_port = 443
-    to_port = 443
-    protocol = "TCP"
-    cidr_blocks = [ "0.0.0.0/0" ]
-  }
-}
-
-resource "aws_eip" "elasticIp" {
-  instance = aws_instance.ec2.id
-}
-
-output "vpcId" {
-  value = aws_eip.elasticIp.public_ip
+output "ec2_private_ip" {
+  value = module.ec2.private_ip
 }
