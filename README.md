@@ -33,10 +33,26 @@ Terraform, CloudFormation are the infrastructure orchestration tools
 which basically means they can provision the servers and infrastructure
 by themselves.
 
+### Attributes
+
+Terraform has capability to output the attribute of a resource with the output values.
+
+Example:
+
+```sh
+ec2_public_ip     = 35.161.21.197
+bucket_identifier = terraform-test-kplabs.s3.amazonaws.com
+```
+
+An outputed attribute can not only be used for the users reference but it can also act as input to other resources being created via terraform.
+
+### Output
+
 ## Things I like
 - Ease of not only spinning up resources but also I really like how easy it is to spin down resources even if they are complex. This solves the [main gripe I had with AWS while studying for the Certified Solutions Architect – Associate](https://github.com/cujarrett/learning-aws/blob/master/aws-certified-solutions-architect%E2%80%93associate/index.md#things-i-dont-like)
 - "Cloud Agnostic" meaning it can be used to spin up resources in AWS, GCP, Azure, etc. The Terraform files would need updated to account for each public cloud namings but the overall structure should be feasible to remain.
 - Can be used to set up on prem infrastructure as well
+- Ability to make targeted changes such as destroying a portion of your deployed infra. Example: `terrafrom destroy -target aws_instance.myec2`.
 
 ## Things I'm not a huge fan of
 - Not super quick... I know, I know, this stuff used to take day/weeks/months but I'm inpatient. That said, it's still way quicker than me trying to spin up resources without Terraform with something like AWS CLI. The slowness isn't on Terraform though I don't think. The 2-5 mins it takes to spin up an RDS is inherent to the architecture of RDS.
