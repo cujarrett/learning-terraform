@@ -2,9 +2,9 @@
 
 # What is it?
 
-This project holds my study notes studying for [HashiCorp Certified: Terraform Associate](https://www.hashicorp.com/certification/terraform-associate).
-It's also a small set of hacks to learn common use cases with [Hashicorp](https://www.hashicorp.com/)
-'s [Terraform](https://www.terraform.io/) :building_construction: :cloud:.
+This project holds my study notes studying for [HashiCorp Certified: Terraform Associate](https://www.credly.com/earner/earned/badge/5af85d36-e997-4591-b745-fec9283ff656).
+
+![certificate](./media/terraform-associate-badge.png)
 
 ## What is Terraform?
 
