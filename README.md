@@ -4,7 +4,7 @@
 
 This project holds my study notes studying for [HashiCorp Certified: Terraform Associate](https://www.credly.com/badges/5af85d36-e997-4591-b745-fec9283ff656).
 
-![certificate](./media/terraform-associate-badge.png)
+[![certificate](./media/terraform-associate-badge.png)](https://www.credly.com/badges/5af85d36-e997-4591-b745-fec9283ff656)
 
 ## What is Terraform?
 
