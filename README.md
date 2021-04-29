@@ -2,7 +2,7 @@
 
 # What is it?
 
-This project holds my study notes studying for [HashiCorp Certified: Terraform Associate](https://www.credly.com/earner/earned/badge/5af85d36-e997-4591-b745-fec9283ff656).
+This project holds my study notes studying for [HashiCorp Certified: Terraform Associate](https://www.credly.com/badges/5af85d36-e997-4591-b745-fec9283ff656).
 
 ![certificate](./media/terraform-associate-badge.png)
 
