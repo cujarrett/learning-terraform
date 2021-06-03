@@ -100,7 +100,7 @@ is set, it creates an additional provider configuration.
 
   Terraform must initialize the provider before it can be used.
 
-  Initialization downloads and installs the provider's plugin's plugin so that it can be later be
+  Initialization downloads and installs the provider's plugins so that it can later be
   executed.
 
   It will not create any sample files like example.tf
@@ -109,7 +109,7 @@ is set, it creates an additional provider configuration.
 
   The Terraform `plan` command is used to create an execution plan.
 
-  It will not modify thinfs in infrastructure.
+  It will not modify things in infrastructure.
 
   Terraform performs a refresh, unless explicitly disabled, and then determines what actions are
   necessary to achieve the desired state specified in the configuration files.
@@ -119,7 +119,7 @@ is set, it creates an additional provider configuration.
 
 - ### Terraform apply
 
-  The Terraform `plan` command is used to apply the changes required to reach the desired state of the
+  The Terraform `apply` command is used to apply the changes required to reach the desired state of the
   configuration.
 
   Terraform apply will also write data to the terraform `.tfstate` file.
@@ -130,13 +130,15 @@ is set, it creates an additional provider configuration.
 
   The Terraform `destroy` command is used to destroy the Terraform managed infrastructure.
 
-  `terraform destroy` command is not the only command through which infrastructure can be destroyed.
+  `terraform destroy` command is not the only command through which infrastructure can be destroyed. For example, you might also delete, or comment out code blocks and apply changes for the same effect.
+
+  You can also be specific in what resources are destroyed using the `terraform destroy -target=<resource>` command. This includes all resources contained in a module if simply the module is provided as a target (e.g. `terraform destroy -target=module.foo`).
 
   `terraform plan -destroy` can be used to preview destroy plan.
 
 - ### Terraform refresh
 
-  The Terraform `refresh` command is used to reconcile the state Terraform knows about )via its state
+  The Terraform `refresh` command is used to reconcile the state Terraform knows about (via its state
   file) with real-world infrastructure.
 
   This does not modify infrastructure but does modify the state file.
@@ -154,16 +156,16 @@ is set, it creates an additional provider configuration.
   The `terraform validate` command validates the configuration files in a directory.
 
   Validate runs checks that verify whether a configuration file is syntactically valid and thus
-  primarily useful for general verification of reusable odules, including the correctness of attribute
+  primarily useful for general verification of reusable modules, including the correctness of attribute
   names and value types.
 
-  It is safe to run this command and automatically, for example, as a post save check in a text editor
+  It is safe to run this command automatically, for example, as a post save check in a text editor
   or as a step for reusable modules in a CI system. It can be run before `terraform plan`.
 
   Vaidation requires an initalized working directory with any referenced plugins and modules
   installed.
 
-- ### Terraform Graph
+- ### Terraform graph
 
   The `terraform graph` command is used to generate a visual representatio of either a configuration
   or execution plan.
@@ -174,6 +176,8 @@ is set, it creates an additional provider configuration.
 
   The Terraform `taint` command manually marks a Terraform managed resource as tainted, forcing it
   to be destroyed and recreated on the next apply.
+
+  From the help doc, "Terraform uses the term "tainted" to describe a resource instance which may not be fully functional, either because its creation partially failed or because you've manually marked it as such using this command."
 
   Once a resource is marked as tainted, the next plan will show that the resource will be destroyed
   and recreated and the next apply will implement this change.
@@ -199,6 +203,8 @@ is set, it creates an additional provider configuration.
   - `terraform state rm` - Remove items from within state file.
   - `terraform state show` - Show attributes of a single resource in the terraform state.
 
+  Be aware that modifying the state directly using commands such as `rm` or `mv` does not modify resources in the active environment directly. Additionally, if you adjust your state file using these commands, you will need to reconcile your code to match. That is, if you `mv` a module and rename it in the process, you will need to update the name in your code to avoid impacting your active environment on the next `terraform apply`.
+
 ## Terraform Provisioners
 
 Provisioners can be used to model specific actions on the local machine or on a remote machine in
@@ -212,7 +218,7 @@ To persist logged output you can set `TF_LOG_PATH`.
 ### Terraform Provisioners Types
 
 - `local-exec` - This provisioner type invokes a local executable after a resource is created. This
-  invokes a process on the maching running Terrafrom, not on the resource.
+  invokes a process on the matching running Terraform, not on the resource.
 
   Example:
 
@@ -285,7 +291,7 @@ The order Terraform loads variables is:
 1. Environment variables
 2. The `terraform.tfvars` file if present
 3. The `terraform.tfvars.json file if present
-4. Any `*.auto.tfvars` or `*.auto.tfcars.json` files processed in lexical order of thier filenames
+4. Any `*.auto.tfvars` or `*.auto.tfvars.json` files processed in lexical order of their filenames
 5. Any `-var` and `-var-file` options on the command line, in the order they are provided
 
 If the same variable is assigned multiple values, Terraform uses the last value it finds.
@@ -324,7 +330,7 @@ they depend on each other.
 ## Debugging in Terraform
 
 Terraform has detailed logs that can be enabled by setting the `TF_LOG` environment variable to one
-of `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` to chnage the verbosity of the logs.
+of `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR` to change the verbosity of the logs.
 
 ## Terraform Data Types
 
@@ -340,12 +346,16 @@ Data sources allow data to be fetched or computed for use elsewhere in Terraform
 
 Reads from a specific data source (aws_ami) and exports results under "app_ami"
 
-## Fething Values from Map
+## Fetching Values from Map
 
-To reference to image-abc from the below map, following approaches needs to be used:
+To reference value image-abc from the below map, the following approaches can be used:
 
 ```hcl
+# approach 1
 var.ami_ids["mumbai"]
+
+# approach 2
+var.ami_ids.mumbai
 ```
 
 ```hcl
@@ -394,7 +404,7 @@ Workspaces are managed with the `terraform workspace` set of commands.
 
 State File Directory = `terraform.tfstate.d`
 
-Not suitable for isolation for strong seperation between workspace (stage/ prod)
+Not suitable for isolation or strong seperation between workspace (stage/ prod)
 
 ![terraform-workspaces-info](./media/terraform-workspace-info.jpg)
 
@@ -410,7 +420,7 @@ Terraform Registry, GitHub, S3, buckets and others.
 Local path references allow for factoring out portions of a configuration within a single source
 repository.
 
-A local path must begin with either `./` of `../` to indicate that a local path is intended.
+A local path must begin with either `./` or `../` to indicate that a local path is intended.
 
 ### Understanding Root and Child
 
@@ -435,11 +445,19 @@ The resources defined in a module are encapsulated, so the calling module cannot
 attributes directly.
 
 However, the child module can declare output values to selectively export certian values to be
-accesses by the calling module.
+accessed by the calling module.
 
 ```hcl
+# child module
 output "instance_ip_address" {
   value = aws_instance.server.private_ip
+}
+```
+
+```hcl
+# calling module
+output "instance_ip_address" {
+  value = module.child_module.instance_ip_address
 }
 ```
 
@@ -458,7 +476,7 @@ output "instance_ip_address" {
 Setting an output value in the root module as sensitive prevents Terraform from showing its value in
 the list of outputs at the end of a `terraform apply`
 
-Sensitive output values are still recorded in the state, and so will be visable to anyone who is
+Sensitive output values are still recorded in the state, and so will be visible to anyone who is
 able to access the state data.
 
 ## Module Versions
@@ -482,7 +500,7 @@ module "consul" {
 The Terraform Registry is intregrated directly into Terraform.
 
 The syntax for refrencing a registry module is `<NAMESPACE>/<NAME>/<PROVIDER>`. For example:
-`hashicord/consul/aws`.
+`hashicorp/consul/aws`.
 
 ```hcl
 module "consul" {
@@ -529,7 +547,7 @@ Be aware of basic functions like `element`, `lookup`.
 The `count` parameter on resources can simplify configurations and let you scale resources by simply
 incrementing a number.
 
-In resource blocks where the count is set, an additional count object (`count.index`) is avai;able
+In resource blocks where the count is set, an additional count object (`count.index`) is available
 in expressions, so that you can modify the configuration of each instance.
 
 ```hcl
@@ -566,7 +584,7 @@ resource "aws_instance" "web" {
 
 ## Sentinel
 
-Sentinel is an embedded policy as code framework intgrated with the Hashicorp Enterprise products.
+Sentinel is an embedded policy as code framework integrated with the Hashicorp Enterprise products.
 
 Can be used for various use cases like:
 
@@ -605,11 +623,11 @@ it in the system.
 
 Backends are configured directly in Terraform files in the Terraform section.
 
-After configuring a backend, it has to be initialized.
+After configuring a backend, it has to be initialized using `terraform init`.
 
 ### Terraform Local Backend
 
-The localbackend stores state on the local filesystem, locks that state using system APIs, and
+The local backend stores state on the local filesystem, locks that state using system APIs, and
 performs opperations locally.
 
 By default, Terraform uses the "local" backend, which is the normal behavior of Terraform you're
@@ -636,7 +654,7 @@ used to.
 
 The remote backend stores Terraform state and may be used to run operations in Terraform Cloud.
 
-When using full remote operations, operations like `terraform plan` or `terraform apply` can be
+When using full remote backends, operations like `terraform plan` or `terraform apply` can be
 executed in Terraform Cloud's run environment, with log output streaming to the local terminal.
 
 ## Splat Expressions
@@ -651,7 +669,7 @@ resource "aws_instance" "load_balancer" {
 }
 
 output "arns" {
-  value = aws_iam)user.load_balancer[*].arn
+  value = aws_iam_user.load_balancer[*].arn
 }
 ```
 
@@ -692,7 +710,7 @@ Team & Governance features are not available for Terraform Cloud free
 
 ## Required Version
 
-The `required_version` setting accepts a version contraint string, which specifies which versions of
+The `required_version` setting accepts a version constraint string, which specifies which versions of
 Terraform can be used with your configuration.
 
 If the running version of Terraform doesn't match the constraints specified, Terraform will produce
@@ -851,13 +869,13 @@ Various variable definition files will be loaded automatically in terraform. The
 
 - `terraform.tfvars`
 - `terraform.tfvars.json`
-- Any files with names ending in `.auto.tfvars.json`
+- Any files with names ending in `auto.tfvars` or `.auto.tfvars.json`
 
 Both implicit and explicit dependency information is stored in `terraform.tfstate` file.
 
 `terraform init -upgrade` updates all previously installed plugins to the newest version.
 
-The terraform console command providers an interactive consile for evaluating expressions.
+The terraform console command provides an interactive consile for evaluating expressions.
 
 ## Exam Question Types
 
